@@ -1,0 +1,27 @@
+{
+  "name": "boilerplate-gulp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/diegomcsilva/Boilerplate-Gulp.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/diegomcsilva/Boilerplate-Gulp/issues"
+  },
+  "homepage": "https://github.com/diegomcsilva/Boilerplate-Gulp#readme",
+  "devDependencies": {
+    "css-scss": "^0.1.1",
+    "gulp": "^4.0.2",
+    "gulp-css-scss": "^0.1.0",
+    "gulp-sass": "^4.0.2",
+    "gulp-scss": "^1.4.0",
+    "node-sass": "^4.13.1"
+  }
+}
