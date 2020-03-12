@@ -19,9 +19,7 @@
   "devDependencies": {
     "css-scss": "^0.1.1",
     "gulp": "^4.0.2",
-    "gulp-css-scss": "^0.1.0",
     "gulp-sass": "^4.0.2",
-    "gulp-scss": "^1.4.0",
     "node-sass": "^4.13.1"
   }
 }
