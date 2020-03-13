@@ -2,7 +2,8 @@ const {
   series,
   parallel,
   src,
-  dest
+  dest,
+  watch
 } = require('gulp');
 const cssScss = require('gulp-sass');
 const babel = require('gulp-babel');
@@ -36,4 +37,9 @@ function javascript() {
     .pipe(dest('dist/'));
 }
 
-exports.default = series(clean, parallel(css_sass, javascript));
+// exports.default = series(clean, parallel(css_sass, javascript));
+exports.default = function() {
+  watch('src/scss/*.css', { delay: 500 }, series(clean, css_sass));
+  // Or a composed task
+  watch('src/js/*.js', { delay: 500 }, series(clean, javascript));
+};
