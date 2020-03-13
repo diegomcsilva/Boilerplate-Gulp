@@ -14,23 +14,23 @@ const resolve = require('rollup-plugin-node-resolve');
 const commonjs = require('rollup-plugin-commonjs');
 const gulpServerIo = require('gulp-server-io');
 const clean = require('gulp-clean');
+const webserver = require('gulp-webserver');
 
 cssScss.compiler = require('node-sass');
 
 function server() {
-  return src('./src/*')
-          .pipe(
-            gulpServerIo({
-              port: 9000,
-              indexes: ['./src/templates/index.html'],
-              webroot: './dist/',
-              callback: files => {
-                  watch('src/scss/*.css', { delay: 500 }, sass);
-                  watch('src/js/*.js', { delay: 500 }, javascript);
-              }
-            })
-          );
-};
+    return src('./')
+      .pipe(webserver({
+        livereload: true,
+        directoryListing: true,
+        open: true,
+        port: 9000,
+        fallback: () {
+          watch('src/scss/*.css', { delay: 500 }, sass);
+          watch('src/js/*.js', { delay: 500 }, javascript);
+        }
+      }));
+};;
 
 function sass() {
   return src('./src/scss/*.scss')

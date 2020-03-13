@@ -27,6 +27,7 @@
     "gulp-sass": "^4.0.2",
     "gulp-server-io": "^1.5.1",
     "gulp-uglify": "^3.0.2",
+    "gulp-webserver": "^0.9.1",
     "node-sass": "^4.13.1",
     "rollup": "^2.0.5",
     "rollup-plugin-babel": "^4.4.0",
