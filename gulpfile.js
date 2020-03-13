@@ -12,22 +12,39 @@ const uglify = require('gulp-uglify');
 const rollup = require('gulp-better-rollup');
 const resolve = require('rollup-plugin-node-resolve');
 const commonjs = require('rollup-plugin-commonjs');
+const gulpServerIo = require('gulp-server-io');
+const clean = require('gulp-clean');
 
-css_sass.compiler = require('node-sass');
+cssScss.compiler = require('node-sass');
 
-function css_sass() {
+function server() {
+  return src('./src/*')
+          .pipe(
+            gulpServerIo({
+              port: 9000,
+              indexes: ['./src/templates/index.html'],
+              webroot: './dist/',
+              callback: files => {
+                  watch('src/scss/*.css', { delay: 500 }, sass);
+                  watch('src/js/*.js', { delay: 500 }, javascript);
+              }
+            })
+          );
+};
+
+function sass() {
   return src('./src/scss/*.scss')
     .pipe(cssScss({
       "bundleExec": true
     }))
     .pipe(cssScss().on('error', cssScss.logError))
-    .pipe(dest('./dist/css'));
+    .pipe(dest('./dist/'));
 
 }
 
-function clean(cb) {
-  // body omitted
-  cb();
+function clean_dist() {
+  return src('./dist/*', {read: false})
+          .pipe(clean());
 }
 
 function javascript() {
@@ -37,9 +54,8 @@ function javascript() {
     .pipe(dest('dist/'));
 }
 
-// exports.default = series(clean, parallel(css_sass, javascript));
-exports.default = function() {
-  watch('src/scss/*.css', { delay: 500 }, series(clean, css_sass));
-  // Or a composed task
-  watch('src/js/*.js', { delay: 500 }, series(clean, javascript));
-};
+exports.default = series(
+  clean_dist, 
+  parallel(sass, javascript), 
+  server
+);
