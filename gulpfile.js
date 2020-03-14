@@ -61,13 +61,8 @@ function javascript() {
 }
 
 function watch_files() {
-  clean_dest();
-  watch('src/scss/*.scss', {
-    delay: 500
-  }, sass);
-  watch('src/js/*.js', {
-    delay: 500
-  }, javascript);
+  watch('src/scss/*.scss', sass);
+  watch('src/js/*.js', javascript);
   image();
   server();
 };
