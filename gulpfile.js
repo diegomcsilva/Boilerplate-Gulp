@@ -12,25 +12,27 @@ const uglify = require('gulp-uglify');
 const rollup = require('gulp-better-rollup');
 const resolve = require('rollup-plugin-node-resolve');
 const commonjs = require('rollup-plugin-commonjs');
-const gulpServerIo = require('gulp-server-io');
 const clean = require('gulp-clean');
 const webserver = require('gulp-webserver');
+const imageTools = require('gulp-image');
 
 cssScss.compiler = require('node-sass');
 
 function server() {
-    return src('./')
-      .pipe(webserver({
-        livereload: true,
-        directoryListing: true,
-        open: true,
-        port: 9000,
-        fallback: () {
-          watch('src/scss/*.css', { delay: 500 }, sass);
-          watch('src/js/*.js', { delay: 500 }, javascript);
-        }
-      }));
+  return src('./')
+    .pipe(webserver({
+      livereload: true,
+      directoryListing: true,
+      open: true,
+      port: 9000,
+    }));
 };;
+
+function image() {
+  return src('./src/image/*')
+    .pipe(imageTools())
+    .pipe(dest('./dest'));
+}
 
 function sass() {
   return src('./src/scss/*.scss')
@@ -38,24 +40,42 @@ function sass() {
       "bundleExec": true
     }))
     .pipe(cssScss().on('error', cssScss.logError))
-    .pipe(dest('./dist/'));
+    .pipe(dest('./dest/'));
 
 }
 
-function clean_dist() {
-  return src('./dist/*', {read: false})
-          .pipe(clean());
+function clean_dest() {
+  return src('./dest/*', {
+      read: false
+    })
+    .pipe(clean());
 }
 
 function javascript() {
   return src('src/js/main.js')
-    .pipe(rollup({ plugins: [babel(), resolve(), commonjs()] }, 'umd'))
+    .pipe(rollup({
+      plugins: [babel(), resolve(), commonjs()]
+    }, 'umd'))
     .pipe(uglify())
-    .pipe(dest('dist/'));
+    .pipe(dest('dest/'));
 }
 
+function watch_files() {
+  clean_dest();
+  watch('src/scss/*.scss', {
+    delay: 500
+  }, sass);
+  watch('src/js/*.js', {
+    delay: 500
+  }, javascript);
+  image();
+  server();
+};
+
 exports.default = series(
-  clean_dist, 
-  parallel(sass, javascript), 
+  clean_dest,
+  image,
+  parallel(sass, javascript),
+  watch_files,
   server
 );

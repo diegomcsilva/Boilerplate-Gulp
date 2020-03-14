@@ -24,6 +24,7 @@
     "gulp-babel": "^8.0.0",
     "gulp-better-rollup": "^4.0.1",
     "gulp-clean": "^0.4.0",
+    "gulp-image": "^6.1.0",
     "gulp-sass": "^4.0.2",
     "gulp-server-io": "^1.5.1",
     "gulp-uglify": "^3.0.2",
